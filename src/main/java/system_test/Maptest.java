@@ -5,6 +5,8 @@ import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
+import java.sql.Timestamp;
+
 public class Maptest {
     public static void main(String[] args) throws Exception{
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -39,6 +41,31 @@ public class Maptest {
 
         env.execute();
     }
+
+    public static class Event {
+        public String user;
+        public String url;
+        public Long timestamp;
+
+        public Event() {
+        }
+
+        public Event(String user, String url, Long timestamp) {
+            this.user = user;
+            this.url = url;
+            this.timestamp = timestamp;
+        }
+
+        @Override
+        public String toString() {
+            return "Event{" +
+                    "user='" + user + '\'' +
+                    ", url='" + url + '\'' +
+                    ", timestamp=" + new Timestamp(timestamp) +
+                    '}';
+        }
+    }
+
     // 自定义MapFunction
     public static class UserExtractor implements MapFunction<Event, String> {
         @Override
